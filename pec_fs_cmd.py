@@ -1,0 +1,106 @@
+from time import time
+from numpy import arange
+from pyscf import gto
+
+from VQE_FS import VQE_fs
+from VQE_utils import build_molecule, build_basis
+
+from arg_parser import build_default_arg_parser
+from myutils import build_h5file
+
+args = build_default_arg_parser().parse_args()
+
+if args.basis == 'custom':
+    mybasis = build_basis({
+        'H': gto.load("./basisets/custom_basis.nw", 'H'),
+        'Li': gto.load("./basisets/custom_basis.nw", 'Li'),
+    }, 'Li-1,2,3s-ccpvdz & H-1s-sto3g')
+elif args.basis == 'small_custom':
+    mybasis = build_basis({
+        'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
+        'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
+    }, 'Li-1,2s-ccpvdz & H-1s-sto3g')
+elif args.basis == 'sto-3g':
+    mybasis = 'sto-3g'
+elif args.basis == '6-31g':
+    mybasis = '6-31g'
+else:
+    mybasis = args.basis
+
+id_job = args.jobID
+
+lengths = []
+energies = []
+
+namefile = "./outputs/" + args.molecule + "_pec_FS_" + str(id_job)
+
+outputfile = open(namefile + ".txt", "a+")
+outputfile.write('**********************************************' + '\n\n')
+outputfile.write('RESULTS FOR VQE POTENTIAL ENERGY CURVE' + '\n\n')
+outputfile.write('**********************************************' + '\n\n\n\n')
+outputfile.flush()
+
+for length in arange(args.lb, args.ub, args.step):
+
+    if args.molecule == 'H2':
+        mymlc = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'H2')
+    elif args.molecule == 'LiH':
+        mymlc = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'LiH')
+    else:
+        raise NotImplementedError('Molecule ' + args.molecule)
+
+    myvqeFS = VQE_fs(
+        mymlc,
+        nlayers=args.nlayer,
+        wordiness=0,
+        ω=args.omega,                                                           #omega is the target zone of total energy, in Ha
+        refstate=args.refstate,
+    )
+
+    initAngles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
+
+    start = time()
+    vqe_energy = myvqeFS.minimize_expval(initAngles, maxiter=1000)
+    end = time()
+    t = end - start
+    lengths.append(length)
+    energies.append(vqe_energy + myvqeFS.molecule.nuclear_energy)
+
+    outputfile.write('Bond Length : ' + str(length) + '\n')
+    outputfile.write('Omega (Total Energy Shift) = ' + str(myvqeFS.omegatot) + ' Ha \n')
+    outputfile.write('refstate = ' + args.refstate + '\n')
+    outputfile.write('Electronic Hamiltonian : (H-' + str(myvqeFS.omegael) + ')² \n')
+    outputfile.write('electronic energy = ' + str(vqe_energy) + ' Ha' + '\n')
+    outputfile.write('total energy = ' + str(vqe_energy + myvqeFS.molecule.nuclear_energy) + ' Ha' + '\n')
+    outputfile.write('time of execution : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
+    outputfile.write("---------------------------------" + '\n')
+    outputfile.write('init angles : ' + str(initAngles) + '\n' + str(myvqeFS.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqeFS.backend) + '\n' + str(myvqeFS.shots) + ' shot(s) ' + '\nalgo ' +
+                     str(myvqeFS.optimizer) + '\n')
+    outputfile.write('Molecule : ' + str(myvqeFS.molecule.name) + '\n')
+    outputfile.write(str(myvqeFS.molecule.geometry) + '\n')
+    outputfile.write('Nuclear Repulsion = ' + str(myvqeFS.molecule.nuclear_energy) + ' Ha\n')
+    outputfile.write("-------------------------------" + '\n\n\n\n')
+    outputfile.write('\n\n LENGTHS \n\n')
+    outputfile.write(str(lengths) + '\n')
+    outputfile.write('\n\n ENERGIES \n\n')
+    outputfile.write(str(energies) + '\n')
+    outputfile.write("-------------------------------------------------------" + '\n\n\n')
+    outputfile.flush()
+
+outputfile.write('Basis : ' + str(myvqeFS.molecule.basis) + '\n')
+outputfile.write('Use Uent gate : ' + str(myvqeFS.useUent) + '\n')
+outputfile.write('Mapper : ' + str(myvqeFS.mapper.name) + '\n')
+outputfile.write("-------------------------------------------------------" + '\n')
+outputfile.write('\n\n LENGTHS \n\n')
+outputfile.write(str(lengths) + '\n')
+outputfile.write('\n\n ENERGIES \n\n')
+outputfile.write(str(energies) + '\n')
+outputfile.write("-------------------------------------------------------" + '\n\n\n')
+
+outputfile.write("******************************" + '\n')
+build_h5file(namefile, lengths, energies)
+outputfile.write('Datafile ' + namefile + '.hdf5' + ' created' + '\n')
+outputfile.write("******************************" + '\n')
+
+outputfile.write('*****pec terminated normally*****')
+outputfile.close()

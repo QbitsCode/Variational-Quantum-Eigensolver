@@ -1,0 +1,8 @@
+/.style.yapf
+/.vscode
+/ExcitedQC.egg-info
+/__pycache__
+/debugging
+/outputs
+/results
+/setup.py
