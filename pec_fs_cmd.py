@@ -36,8 +36,14 @@ namefile = "./outputs/" + args.molecule + "_pec_FS_" + str(id_job)
 
 outputfile = open(namefile + ".txt", "a+")
 outputfile.write('**********************************************' + '\n\n')
-outputfile.write('RESULTS FOR VQE POTENTIAL ENERGY CURVE' + '\n\n')
+outputfile.write('FOLDED SPECTRUM VQE POTENTIAL ENERGY CURVE' + '\n\n')
 outputfile.write('**********************************************' + '\n\n\n\n')
+
+outputfile.write("Input : \n")
+outputfile.write(str(args.nlayer) + "layer(s) \n")
+outputfile.write('Device : ' + args.device + '\n')
+outputfile.write('Range from ' + str(args.lb) + ' to ' + str(args.ub) + ' Å, step ' + str(args.step) + ' Å \n')
+
 outputfile.flush()
 
 for length in arange(args.lb, args.ub, args.step):

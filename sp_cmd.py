@@ -108,8 +108,8 @@ else:
     outputfile.write('final angles = ' + str(myvqe.opt_angles) + '\n')
 
 t = end - start
-outputfile.write('init state : ' + myvqe.init_state)
-outputfile.write('final state = ' + myvqe.final_state)
+outputfile.write('init state : ' + myvqe.init_state + '\n')
+outputfile.write('final state = ' + myvqe.final_state + '\n')
 outputfile.write('VQE electronic energy = ' + str(vqe_energy) + ' Ha' + '\n')
 outputfile.write('total energy = ' + str(vqe_energy + myvqe.molecule.nuclear_energy) + ' Ha' + '\n')
 outputfile.write('time of execution : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
