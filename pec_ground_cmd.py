@@ -36,7 +36,7 @@ if args.nlayer == 0:
     namefile = "./outputs/" + args.molecule + "_pec_HF_" + str(id_job)
     outputfile = open(namefile + ".txt", "a+")
     outputfile.write('**********************************************' + '\n\n')
-    outputfile.write('RESULTS FOR ' + args.molecule + ' VQE ENERGY CALCULATION' + '\n\n')
+    outputfile.write('RESULTS FOR ' + args.molecule + ' Hartree Fock ENERGY VQE CALCULATION' + '\n\n')
     outputfile.write('**********************************************' + '\n\n\n\n')
     outputfile.flush()
 else:
@@ -46,6 +46,12 @@ else:
     outputfile.write('RESULTS FOR ' + args.molecule + ' VQE ENERGY CALCULATION' + '\n\n')
     outputfile.write('**********************************************' + '\n\n\n\n')
     outputfile.flush()
+
+outputfile.write("Input : \n")
+outputfile.write(str(args.nlayer) + "layer(s) \n")
+outputfile.write('Device : ' + args.device + '\n')
+outputfile.write('Range from ' + str(args.lb) + ' to ' + str(args.ub) + ' Å, step ' + str(args.step) + ' Å \n')
+outputfile.flush()
 
 for length in arange(args.lb, args.ub, args.step):
 
@@ -80,6 +86,7 @@ for length in arange(args.lb, args.ub, args.step):
     energies.append(vqe_energy + myvqe.molecule.nuclear_energy)
 
     outputfile.write('Bond Length : ' + str(length) + '\n')
+    outputfile.write('final state = ' + myvqe.final_state + '\n')
     outputfile.write('electronic energy = ' + str(vqe_energy) + ' Ha' + '\n')
     outputfile.write('total energy = ' + str(vqe_energy + myvqe.molecule.nuclear_energy) + ' Ha' + '\n')
     outputfile.write('time of execution : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
