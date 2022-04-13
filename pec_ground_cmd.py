@@ -89,7 +89,7 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write('final state = ' + myvqe.final_state + '\n')
     outputfile.write('electronic energy = ' + str(vqe_energy) + ' Ha' + '\n')
     outputfile.write('total energy = ' + str(vqe_energy + myvqe.molecule.nuclear_energy) + ' Ha' + '\n')
-    outputfile.write('time of execution : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
+    outputfile.write('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
     outputfile.write("------------------" + '\n')
     outputfile.write('init angles : ' + str(initAngles) + '\n' + str(myvqe.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqe.backend) + '\n' + str(myvqe.shots) + ' shot(s) ' + '\nalgo ' + str(myvqe.optimizer) +
                      '\n')

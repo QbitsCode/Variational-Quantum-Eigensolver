@@ -1,5 +1,6 @@
 from abc import ABC
 from math import pi
+from xml.dom.minidom import Attr
 
 from scipy import optimize
 from qiskit import execute, Aer, QuantumRegister, QuantumCircuit
@@ -10,7 +11,6 @@ from qiskit.quantum_info.operators.symplectic.pauli import Pauli
 from qiskit.quantum_info.operators.symplectic.pauli_list import PauliList
 from qiskit_nature.converters.second_quantization import QubitConverter
 from qiskit_nature.mappers.second_quantization import JordanWignerMapper
-from qiskit.algorithms.optimizers import COBYLA, SLSQP, SPSA
 
 from VQE_utils import build_Ham, build_UCCops, findpostrot, build_HF, UCC_gate, init_gate, ent_gate, postrot_gate
 from myutils import getStrFinalRes
@@ -141,14 +141,25 @@ class VQE_g(ABC):
             result = optimize.minimize(self.measure_energy, initAngles, method=self.optimizer, options={'maxiter': maxiter},
                                        bounds=[(-2 * pi, 2 * pi)
                                                for _ in range(self.nexc * self.nlayers)])                                    #methods COBYLA (default maxiter = 1000), SLSQP (default maxiter = 100), SPSA noise tolerant (default maxiter = 100)
-            self.success = result.success
-            self.optmessage = result.message
         elif self.optimize_with.casefold() == 'qiskit'.casefold():                                                           #with qiskit
             algorithm = self.optimizer(maxiter=maxiter)
             result = algorithm.minimize(self.measure_energy, initAngles)
         else:
             print('Unknown library for optimization')
-        self.niter = result.nit
+
+        try:
+            self.success = result.success
+        except AttributeError:
+            self.success = 'Undefined'
+        try:
+            self.optmessage = result.message
+        except AttributeError:
+            self.optmessage = 'Undefined'
+        try:
+            self.niter = result.nit
+        except AttributeError:
+            self.niter = 'Undefined'
+
         self.opt_angles = result.x
         self.opt_state = self.psi_ansatz(self.opt_angles)
         self.opt_energy = self.measure_energy(self.opt_angles)

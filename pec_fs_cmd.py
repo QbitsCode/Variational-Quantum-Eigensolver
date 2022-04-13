@@ -79,7 +79,7 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write('Electronic Hamiltonian : (H-' + str(myvqeFS.omegael) + ')² \n')
     outputfile.write('electronic energy = ' + str(vqe_energy) + ' Ha' + '\n')
     outputfile.write('total energy = ' + str(vqe_energy + myvqeFS.molecule.nuclear_energy) + ' Ha' + '\n')
-    outputfile.write('time of execution : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
+    outputfile.write('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
     outputfile.write("---------------------------------" + '\n')
     outputfile.write('init angles : ' + str(initAngles) + '\n' + str(myvqeFS.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqeFS.backend) + '\n' + str(myvqeFS.shots) + ' shot(s) ' + '\nalgo ' +
                      str(myvqeFS.optimizer) + '\n')

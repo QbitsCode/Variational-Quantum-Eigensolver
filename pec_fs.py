@@ -36,7 +36,7 @@ for length in arange(0.9, 3, 0.2):
     print('Converged after', myvqe1.niter, 'iterations ; final angles', myvqe1.opt_angles)
     print('electronic energy (computed) is ', vqe_energy, 'Ha')
     print('total energy : ', vqe_energy + myvqe1.molecule.nuclear_energy, 'Ha')
-    print('time of execution : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
+    print('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
 
     lengths.append(length)
     energies.append(vqe_energy + myvqe1.molecule.nuclear_energy)

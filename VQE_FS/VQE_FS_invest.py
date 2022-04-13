@@ -92,18 +92,16 @@ class VQE_fs_test(ABC):
 
     def psi_ansatz(self, angles, Measure_State=False):
         psiQR = QuantumRegister(self.nqbits)
-        psi = QuantumCircuit(psiQR)                                             # create quantum circ
-        self.na = 0                                                             #TODO change that                  # counter for angles
+        psi = QuantumCircuit(psiQR)                                             #TODO change that                  # counter for angles
 
-        psi.append(init_gate(self), psiQR)                                      # initialize with reference state
-        psi.barrier()
-        for _ in range(self.nlayers):
+        psi.append(init_gate(self), psiQR)
+        for na in range(self.nlayers):
             if self.useUent:
                 psi.append(ent_gate(self), psiQR)                               # Entangle
-            psi.append(UCC_gate(self, angles), psiQR)                           # UCC ansatz
+            psi.append(UCC_gate(self, angles, na), psiQR)                       # UCC ansatz
 
         if Measure_State:
-            _backend = Aer.get_backend(self.backend)                            #Simulation          qasm_simulator  ;  statevector_simulator
+            _backend = Aer.get_backend(self.backend)
             _backend.set_options(device=self.device)
             result = execute(psi, _backend).result().data(0)                    #DEBUG
             return getStrFinalRes(result)                                       #DEBUG
@@ -208,6 +206,19 @@ class VQE_fs_test(ABC):
             result = algorithm.minimize(self.measure_expval, initAngles)
         else:
             print('Unknown library for optimization')
+
+        try:
+            self.success = result.success
+        except AttributeError:
+            self.success = 'Undefined'
+        try:
+            self.optmessage = result.message
+        except AttributeError:
+            self.optmessage = 'Undefined'
+        try:
+            self.niter = result.nit
+        except AttributeError:
+            self.niter = 'Undefined'
 
         self.loss = result.fun
         self.opt_angles = result.x

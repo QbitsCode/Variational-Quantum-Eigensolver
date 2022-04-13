@@ -18,11 +18,10 @@ outputfile.write('**********************************************' + '\n')
 outputfile.write('States with ' + str(nel) + ' electrons only. \n\n\n\n')
 outputfile.flush()
 
-mybasis = build_basis(
-    {
-        'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
-        'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
-    }, 'Li-1,2s-ccpvdz & H-1s-sto3g')
+mybasis = build_basis({
+    'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
+    'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
+}, 'Li-1,2s-ccpvdz & H-1s-sto3g')
 
 wrong_index = []
 
@@ -40,8 +39,7 @@ energies = [[] for _ in range(2**nqbits - len(wrong_index))]
 
 for length in arange(0.2, 6, 0.2):
 
-    LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, length])], mybasis,
-                         0, 1, 'LiH')
+    LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'LiH')
     # H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, length])], 'sto-3g', 0, 1, 'H2')
 
     mymlc = LiH
@@ -77,13 +75,9 @@ for length in arange(0.2, 6, 0.2):
 
     outputfile.write('Bond Length : ' + str(length) + '\n\n')
     outputfile.write('vp of H in Eel= ' + str(phyvalues) + '\n\n')
-    outputfile.write('vp of H in Etot= ' +
-                     str(phyvalues + myvqeG.molecule.nuclear_energy) + '\n\n')
-    outputfile.write('Time of execution : ' + str(t // 3600) + ' h ' +
-                     str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) +
-                     ' sec' + '\n')
-    outputfile.write(
-        '------------------------------------------------------- \n\n')
+    outputfile.write('vp of H in Etot= ' + str(phyvalues + myvqeG.molecule.nuclear_energy) + '\n\n')
+    outputfile.write('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
+    outputfile.write('------------------------------------------------------- \n\n')
     outputfile.flush()
     lengths.append(length)
     phyvalues = sort(phyvalues)
@@ -100,8 +94,7 @@ outputfile.write('\n\n SEPARATED ENERGIES \n\n')
 for k in range(len(energies)):
     outputfile.write(str(energies[k]) + '\n\n\n')
     outputfile.write('------------------\n\n\n')
-outputfile.write("-------------------------------------------------------" +
-                 '\n\n\n')
+outputfile.write("-------------------------------------------------------" + '\n\n\n')
 outputfile.flush()
 
 outputfile.write("******************************" + '\n')

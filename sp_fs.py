@@ -10,20 +10,20 @@ custom_basis = build_basis({
     'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
 }, 'Li-1,2s-ccpvdz & H-1s-sto3g')
 
-# H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], custom_basis, 0, 1, 'H2')
+H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], custom_basis, 0, 1, 'H2')
 # He = build_molecule([('He', [0, 0, 0])], '6-31g', 0, 1, 'He')
 # H2O = build_molecule([('O', [-3.56626, 1.77639, 0]),('H', [-2.59626, 1.77639, 0.00000]),('H', [-3.88959, 1.36040, -0.81444])], 'sto3g', 0, 1,'H2O')
 # N2 = build_molecule([('N',[0,0,0]),('N',[0,0,1.0975])], 'sto-3g', 0, 1,'N2')
-LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, 0.7])], custom_basis, 0, 1, 'LiH')
+# LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, 0.7])], custom_basis, 0, 1, 'LiH')
 
-mymlc = LiH
-algo = VQE_fs
+mymlc = H2
+algo = VQE_fs_test
 
 myvqeFS = algo(
     mymlc,
     nlayers=1,
-    wordiness=3,
-    ω=-7.2,                                                                     #omega is the target zone of total energy, in Ha
+    wordiness=0,
+    ω=0,                                                                        #omega is the target zone of total energy, in Ha
     refstate='HF',
 )
 
@@ -42,6 +42,9 @@ else:
     end = time()
     print('init angles', initAngles)
     print('final angles', myvqeFS.opt_angles)
+    print('# iterations = ', myvqeFS.niter)
+    print('optimization success ', myvqeFS.success)
+    print('exit flag ', myvqeFS.optmessage)
 
 t = end - start
 print('\n***********************')
@@ -54,6 +57,6 @@ print('init state : ', myvqeFS.init_state)
 print('final state = ', myvqeFS.final_state)
 print('electronic energy = ', vqe_energy, 'Ha')
 print('total energy : ', vqe_energy + myvqeFS.molecule.nuclear_energy, 'Ha')
-print('time of execution : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec')
+print('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec')
 print('***********************')
 # print('final expectation value of qOp = ', myvqeFS.loss)
