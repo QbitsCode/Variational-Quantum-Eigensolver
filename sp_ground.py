@@ -22,8 +22,6 @@ myvqeG = VQE_g(
     mymlc,
     nlayers=1,
     wordiness=0,
-    optimize_with='scipy',
-    optimizer='SLSQP',
 )
 
 initzeros = [0.0 for _ in range(myvqeG.nexc * myvqeG.nlayers)]

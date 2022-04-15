@@ -1,9 +1,16 @@
 /.style.yapf
 /.vscode
 /ExcitedQC.egg-info
-/__pycache__
+__pycache__/
 /debugging
 /outputs
 /results
 /setup.py
 /run_obs.sh
+*.pyc
+**/__pycache__/
+VQE_ground/__pycache__/
+/VQE_FS/__pycache__/
+/VQE_utils/__pycache__/
+/myutils/__pycache__/
+/HF/__pycache__/

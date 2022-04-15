@@ -4,9 +4,9 @@ from pyscf import gto
 
 from VQE_FS import VQE_fs
 from VQE_utils import build_molecule, build_basis
+from myutils import build_h5file_onestate, build_ket_coeff_dict
 
 from arg_parser import build_default_arg_parser
-from myutils import build_h5file
 
 args = build_default_arg_parser().parse_args()
 
@@ -37,12 +37,12 @@ namefile = "./outputs/" + args.molecule + "_pec_FS_" + str(id_job)
 outputfile = open(namefile + ".txt", "a+")
 outputfile.write('**********************************************' + '\n\n')
 outputfile.write('FOLDED SPECTRUM VQE POTENTIAL ENERGY CURVE' + '\n\n')
-outputfile.write('**********************************************' + '\n\n\n\n')
+outputfile.write('**********************************************' + '\n')
 
 outputfile.write("Input : \n")
 outputfile.write(str(args.nlayer) + "layer(s) \n")
 outputfile.write('Device : ' + args.device + '\n')
-outputfile.write('Range from ' + str(args.lb) + ' to ' + str(args.ub) + ' Å, step ' + str(args.step) + ' Å \n')
+outputfile.write('Range from ' + str(args.lb) + ' to ' + str(args.ub) + ' Å, step ' + str(args.step) + ' Å \n\n\n\n')
 
 outputfile.flush()
 
@@ -63,14 +63,25 @@ for length in arange(args.lb, args.ub, args.step):
         refstate=args.refstate,
     )
 
+    if length == args.lb:
+        ket_coeff_dict, ket_list = build_ket_coeff_dict(myvqeFS.nα + myvqeFS.nβ, myvqeFS.nqbits)
+
     initAngles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
 
     start = time()
     vqe_energy = myvqeFS.minimize_expval(initAngles, maxiter=1000)
     end = time()
     t = end - start
+
     lengths.append(length)
     energies.append(vqe_energy + myvqeFS.molecule.nuclear_energy)
+    final_state_dict = myvqeFS.final_state_dict
+
+    for ket in ket_coeff_dict:
+        if ket in final_state_dict:
+            ket_coeff_dict[ket].append(final_state_dict[ket].real)
+        else:
+            ket_coeff_dict[ket].append(0)
 
     outputfile.write('Bond Length : ' + str(length) + '\n')
     outputfile.write('Omega (Total Energy Shift) = ' + str(myvqeFS.omegatot) + ' Ha \n')
@@ -86,6 +97,9 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write('Molecule : ' + str(myvqeFS.molecule.name) + '\n')
     outputfile.write(str(myvqeFS.molecule.geometry) + '\n')
     outputfile.write('Nuclear Repulsion = ' + str(myvqeFS.molecule.nuclear_energy) + ' Ha\n')
+    outputfile.write('# iterations = ' + str(myvqeFS.niter) + '\n')
+    outputfile.write('optimization success ' + str(myvqeFS.success) + '\n')
+    outputfile.write('ExitFlag ' + str(myvqeFS.optmessage) + '\n')
     outputfile.write("-------------------------------" + '\n\n\n\n')
     outputfile.write('\n\n LENGTHS \n\n')
     outputfile.write(str(lengths) + '\n')
@@ -105,7 +119,7 @@ outputfile.write(str(energies) + '\n')
 outputfile.write("-------------------------------------------------------" + '\n\n\n')
 
 outputfile.write("******************************" + '\n')
-build_h5file(namefile, lengths, energies)
+build_h5file_onestate(namefile, lengths, energies, ket_coeff_dict, ket_list)
 outputfile.write('Datafile ' + namefile + '.hdf5' + ' created' + '\n')
 outputfile.write("******************************" + '\n')
 

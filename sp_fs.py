@@ -10,20 +10,20 @@ custom_basis = build_basis({
     'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
 }, 'Li-1,2s-ccpvdz & H-1s-sto3g')
 
-H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], custom_basis, 0, 1, 'H2')
+# H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], custom_basis, 0, 1, 'H2')
 # He = build_molecule([('He', [0, 0, 0])], '6-31g', 0, 1, 'He')
 # H2O = build_molecule([('O', [-3.56626, 1.77639, 0]),('H', [-2.59626, 1.77639, 0.00000]),('H', [-3.88959, 1.36040, -0.81444])], 'sto3g', 0, 1,'H2O')
 # N2 = build_molecule([('N',[0,0,0]),('N',[0,0,1.0975])], 'sto-3g', 0, 1,'N2')
-# LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, 0.7])], custom_basis, 0, 1, 'LiH')
+LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, 0.6])], custom_basis, 0, 1, 'LiH')
 
-mymlc = H2
-algo = VQE_fs_test
+mymlc = LiH
+algo = VQE_fs
 
 myvqeFS = algo(
     mymlc,
     nlayers=1,
     wordiness=0,
-    ω=0,                                                                        #omega is the target zone of total energy, in Ha
+    ω=-7,                                                                       #omega is the target zone of total energy, in Ha
     refstate='HF',
 )
 

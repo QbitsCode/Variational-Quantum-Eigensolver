@@ -4,7 +4,7 @@ from pyscf import gto
 
 from VQE_ground import VQE_g
 from VQE_utils import build_molecule, build_basis
-from myutils import build_h5file
+from myutils import build_h5file_onestate, build_ket_coeff_dict
 
 from arg_parser import build_default_arg_parser
 
@@ -44,13 +44,13 @@ else:
     outputfile = open(namefile + ".txt", "a+")
     outputfile.write('**********************************************' + '\n\n')
     outputfile.write('RESULTS FOR ' + args.molecule + ' VQE ENERGY CALCULATION' + '\n\n')
-    outputfile.write('**********************************************' + '\n\n\n\n')
+    outputfile.write('**********************************************' + '\n')
     outputfile.flush()
 
 outputfile.write("Input : \n")
 outputfile.write(str(args.nlayer) + "layer(s) \n")
 outputfile.write('Device : ' + args.device + '\n')
-outputfile.write('Range from ' + str(args.lb) + ' to ' + str(args.ub) + ' Å, step ' + str(args.step) + ' Å \n')
+outputfile.write('Range from ' + str(args.lb) + ' to ' + str(args.ub) + ' Å, step ' + str(args.step) + ' Å \n\n\n\n')
 outputfile.flush()
 
 for length in arange(args.lb, args.ub, args.step):
@@ -67,6 +67,9 @@ for length in arange(args.lb, args.ub, args.step):
         nlayers=args.nlayer,
         device=args.device,
     )
+
+    if length == args.lb:
+        ket_coeff_dict, ket_list = build_ket_coeff_dict(myvqe.nα + myvqe.nβ, myvqe.nqbits)
 
     initAngles = [0.0 for _ in range(myvqe.nexc * myvqe.nlayers)]
 
@@ -85,6 +88,14 @@ for length in arange(args.lb, args.ub, args.step):
     lengths.append(length)
     energies.append(vqe_energy + myvqe.molecule.nuclear_energy)
 
+    final_state_dict = myvqe.final_state_dict
+
+    for ket in ket_coeff_dict:
+        if ket in final_state_dict:
+            ket_coeff_dict[ket].append(final_state_dict[ket].real)
+        else:
+            ket_coeff_dict[ket].append(0)
+
     outputfile.write('Bond Length : ' + str(length) + '\n')
     outputfile.write('final state = ' + myvqe.final_state + '\n')
     outputfile.write('electronic energy = ' + str(vqe_energy) + ' Ha' + '\n')
@@ -96,9 +107,13 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write('Molecule : ' + str(myvqe.molecule.name) + '\n')
     outputfile.write(str(myvqe.molecule.geometry) + '\n')
     outputfile.write('Nuclear Repulsion = ' + str(myvqe.molecule.nuclear_energy) + ' Ha\n')
+    outputfile.write('# iterations = ' + str(myvqe.niter) + '\n')
+    outputfile.write('optimization success ' + str(myvqe.success) + '\n')
+    outputfile.write('ExitFlag ' + str(myvqe.optmessage) + '\n')
     outputfile.write("-------------------------------" + '\n\n\n\n')
     outputfile.flush()
 
+print(ket_coeff_dict)
 outputfile.write('Basis : ' + str(myvqe.molecule.basis_name) + '\n')
 outputfile.write('Use Uent gate : ' + str(myvqe.useUent) + '\n')
 outputfile.write('Mapper : ' + str(myvqe.mapper.name) + '\n')
@@ -110,7 +125,7 @@ outputfile.write(str(energies) + '\n')
 outputfile.write("-------------------------------------------------------" + '\n\n\n')
 
 outputfile.write("******************************" + '\n')
-build_h5file(namefile, lengths, energies)
+build_h5file_onestate(namefile, lengths, energies, ket_coeff_dict, ket_list)
 outputfile.write('Datafile ' + namefile + '.hdf5' + ' created' + '\n')
 outputfile.write("******************************" + '\n')
 

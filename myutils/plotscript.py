@@ -3,15 +3,18 @@ import matplotlib.pyplot as plt
 
 #TODO
 
-namefile = "../outputs/testH2.hdf5"
+states_dict = {}
+file = h5py.File('/home/qlila/Cambridge/ExcitedQC/debugging/dict_data.hdf5', 'r')
+dict_group_load = file['dict_data']
+dict_group_keys = dict_group_load.keys()
+for k in dict_group_keys:
+    states_dict[k] = list(dict_group_load[k][()])
 
-datafile = h5py.File(namefile, 'r')
+lengths = file['LENGTHS'][()]
+print(lengths)
+print(states_dict)
 
-mylen = datafile['LENGTHS'][()]
-myy = datafile['ENERGY2'][()]
-
-plt.plot(mylen, myy)
-
+for key in states_dict:
+    plt.plot(lengths, states_dict[key], label=key)
+plt.legend()
 plt.show()
-
-datafile.close()

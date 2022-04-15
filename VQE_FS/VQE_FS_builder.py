@@ -13,7 +13,7 @@ from qiskit_nature.converters.second_quantization import QubitConverter
 from qiskit_nature.mappers.second_quantization import JordanWignerMapper
 
 from VQE_utils import build_Ham, build_UCCops, findpostrot, build_FSop, build_HF, init_gate, UCC_gate, ent_gate, postrot_gate
-from myutils import getStrFinalRes
+from myutils import getStrFinalRes, getDictFinalRes
 
 
 class VQE_fs(ABC):
@@ -102,7 +102,7 @@ class VQE_fs(ABC):
             _backend = Aer.get_backend(self.backend)
             _backend.set_options(device=self.device)
             result = execute(psi, _backend).result().data(0)                    #DEBUG
-            return getStrFinalRes(result)                                       #DEBUG
+            return getStrFinalRes(result), getDictFinalRes(result)              #DEBUG
 
         return psi, psiQR
 
@@ -151,7 +151,7 @@ class VQE_fs(ABC):
         final_expval = sum(term_expvals)
         if self.nlayers == 0:
             self.init_state = init_gate(self, Measure_State=True)
-            self.final_state = self.psi_ansatz(None, Measure_State=True)
+            self.final_state = self.psi_ansatz(None, Measure_State=True)[0]
         if self.wordiness > 0:
             print(angles)
             print(final_expval)
@@ -184,7 +184,7 @@ class VQE_fs(ABC):
         final_energy = sum(eval_energies)
         if self.nlayers == 0:
             self.init_state = init_gate(self, Measure_State=True)
-            self.final_state = self.psi_ansatz(None, Measure_State=True)
+            self.final_state = self.psi_ansatz(None, Measure_State=True)[0]
         if self.wordiness > 0:
             print(angles)
             print(final_energy)
@@ -221,6 +221,5 @@ class VQE_fs(ABC):
         self.opt_energy = self.measure_energy(self.opt_angles)
 
         self.init_state = init_gate(self, Measure_State=True)
-        self.final_state = self.psi_ansatz(self.opt_angles, Measure_State=True)
-
+        self.final_state, self.final_state_dict = self.psi_ansatz(self.opt_angles, Measure_State=True)
         return self.opt_energy
