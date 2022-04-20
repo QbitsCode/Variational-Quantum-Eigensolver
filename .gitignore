@@ -7,6 +7,7 @@ __pycache__/
 /results
 /setup.py
 /run_obs.sh
+/run_rogue.sh
 *.pyc
 **/__pycache__/
 VQE_ground/__pycache__/
