@@ -55,15 +55,22 @@ for length in arange(args.lb, args.ub, args.step):
     else:
         raise NotImplementedError('Molecule ' + args.molecule)
 
+    if length == args.lb:
+        ω = args.omega
+    else:
+        init_angles = last_angles
+        ω = last_energy
+
     myvqeFS = VQE_fs(
         mymlc,
         nlayers=args.nlayer,
         wordiness=0,
-        ω=args.omega,                                                           #omega is the target zone of total energy, in Ha
+        ω=ω,                                                                    #omega is the target zone of total energy, in Ha
         refstate=args.refstate,
     )
 
     if length == args.lb:
+        init_angles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
         ket_coeff_dict, ket_list = build_ket_coeff_dict(myvqeFS.nα + myvqeFS.nβ, myvqeFS.nqbits)
 
     init_angles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
@@ -75,7 +82,10 @@ for length in arange(args.lb, args.ub, args.step):
 
     lengths.append(length)
     energies.append(vqe_energy + myvqeFS.molecule.nuclear_energy)
+
     final_state_dict = myvqeFS.final_state_dict
+    last_angles = myvqeFS.opt_angles
+    last_energy = vqe_energy + myvqeFS.molecule.nuclear_energy
 
     for ket in ket_coeff_dict:
         if ket in final_state_dict:
