@@ -3,7 +3,7 @@ import numpy
 from numpy import arange
 
 
-def build_h5file_multiplestates(namefile, lengths, energies, state_dict=[], right_kets=[]):
+def build_h5file_multiplestates(namefile, lengths, energies, state_dict={}, right_kets=[]):
     h5out = h5py.File(namefile + ".hdf5", "w")
     h5out.create_dataset("LENGTHS", data=lengths)
     h5out.create_dataset("ENERGY", data=energies)
@@ -15,7 +15,7 @@ def build_h5file_multiplestates(namefile, lengths, energies, state_dict=[], righ
     h5out.close()
 
 
-def build_h5file_onestate(namefile, lengths, energies, state_dict=[], right_kets=[]):
+def build_h5file_onestate(namefile, lengths, energies, state_dict={}, right_kets=[]):
     h5out = h5py.File(namefile + ".hdf5", "w")
     h5out.create_dataset("LENGTHS", data=lengths)
     h5out.create_dataset("ENERGY", data=energies)
