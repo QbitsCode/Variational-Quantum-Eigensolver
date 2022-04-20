@@ -2,7 +2,7 @@ from time import time
 from qiskit import Aer
 from numpy import arange
 
-from VQE_FS import VQE_fs
+from VQE_FS import VQE_fs, VQE_fs_test
 from VQE_utils import build_molecule
 
 He = build_molecule([('He', [0, 0, 0])], '6-31g', 0, 1, 'He')
@@ -11,37 +11,56 @@ H2O = build_molecule([('O', [-3.56626, 1.77639, 0]), ('H', [-2.59626, 1.77639, 0
 lengths = []
 energies = []
 
-for length in arange(0.9, 3, 0.2):
+lb = 0.9
+ub = 1.2
+step = 0.1
+
+Gstart = time()
+
+for length in arange(lb, ub, step):
     H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, length])], 'sto-3g', 0, 1, 'H2')
 
-    myvqe1 = VQE_fs(
+    if length == lb:
+        ω = -0.9
+    else:
+        init_angles = last_angles
+        ω = last_energy
+
+    myvqe = VQE_fs(
         H2,
         nlayers=1,
-        backend='statevector_simulator',                                        #'qasm_simulator' or 'statevector_simulator'
-        shots=1,
-        optimizer='SLSQP',
-        optimize_with='scipy',
-        wordiness=False,
-        useUent=False,
-        omegatot=-0.9,                                                          #omega is the target zone of total energy, in Ha
+        wordiness=0,
+        ω=ω,                                                                    #omega is the target zone of total energy, in Ha
+        refstate='HF',
     )
 
-    initAngles = [0.0 for _ in range(myvqe1.nexc * myvqe1.nlayers)]
+    if length == lb:
+        init_angles = [0.0 for _ in range(myvqe.nexc * myvqe.nlayers)]
 
     start = time()
-    vqe_energy = myvqe1.minimize_energy(initAngles, maxiter=1000)
+    vqe_energy = myvqe.minimize_expval(init_angles, maxiter=1000)
     end = time()
     t = end - start
-    print('init', initAngles, '; ', myvqe1.nlayers, 'layer(s)', '; ', myvqe1.shots, 'shot(s)', ';', myvqe1.backend, '; algo', myvqe1.optimizer)
-    print('Converged after', myvqe1.niter, 'iterations ; final angles', myvqe1.opt_angles)
-    print('electronic energy (computed) is ', vqe_energy, 'Ha')
-    print('total energy : ', vqe_energy + myvqe1.molecule.nuclear_energy, 'Ha')
+
+    print('Bond Length : ' + str(length) + '\n')
+    print('Omega (Total Energy Shift) = ' + str(myvqe.omegatot) + ' Ha \n')
+    print('refstate = ' + myvqe.refstate + '\n')
+    print('final state = ' + myvqe.final_state + '\n')
+    print('init', init_angles, '; ', myvqe.nlayers, 'layer(s)', '; ', myvqe.shots, 'shot(s)', ';', myvqe.backend, '; algo', myvqe.optimizer)
+    print('optimization success ' + str(myvqe.success) + ' after', myvqe.niter, ' iterations ; final angles', myvqe.opt_angles)
+    print('electronic energy ', vqe_energy, 'Ha')
+    print('total energy : ', vqe_energy + myvqe.molecule.nuclear_energy, 'Ha')
     print('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
 
     lengths.append(length)
-    energies.append(vqe_energy + myvqe1.molecule.nuclear_energy)
+    energies.append(vqe_energy + myvqe.molecule.nuclear_energy)
     print(lengths)
     print(energies)
+    print('------------')
+    last_angles = myvqe.opt_angles
+    last_energy = vqe_energy + myvqe.molecule.nuclear_energy
 
-print(lengths)
-print(energies)
+Gend = time()
+
+T = Gend - Gstart
+print('Total Runtime : ' + str(T // 3600) + ' h ' + str((T % 3600) // 60) + ' min ' + str((T % 3600) % 60) + ' sec' + '\n')
