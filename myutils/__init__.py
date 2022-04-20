@@ -1,2 +1,2 @@
-from .State_Vector_Manage import printFinalRes, getDictFinalRes, getStrFinalRes, ket2list, list2ket, build_ket_coeff_dict, build_state_kets_dict
+from .State_Vector_Manager import printFinalRes, getDictFinalRes, getStrFinalRes, ket2list, list2ket, build_ket_coeff_dict, build_state_kets_dict
 from .datafile import build_h5file_multiplestates, build_h5file_onestate

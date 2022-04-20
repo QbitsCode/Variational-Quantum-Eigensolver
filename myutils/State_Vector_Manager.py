@@ -47,11 +47,12 @@ def printOneState(d):                                                           
 
 
 def strOneState(d):
+    sd = {key: v for key, v in sorted(d.items(), key=lambda item: abs(item[1]), reverse=True)}
     r = ''
     start = " "
-    for k in d:
-        im = d[k].imag
-        re = d[k].real
+    for k in sd:
+        im = sd[k].imag
+        re = sd[k].real
         if abs(im) >= 0.00001 or abs(re) >= 0.00001:
             if abs(im) < 0.00001:
                 r += "%s % .5f %s" % (start, re, k) + '\n'
