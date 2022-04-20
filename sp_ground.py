@@ -25,11 +25,11 @@ myvqeG = VQE_g(
 )
 
 initzeros = [0.0 for _ in range(myvqeG.nexc * myvqeG.nlayers)]
-initAngles = initzeros
+init_angles = initzeros
 
 if myvqeG.nlayers == 0:
     start = time()
-    vqe_energy = myvqeG.measure_energy(initAngles)
+    vqe_energy = myvqeG.measure_energy(init_angles)
     end = time()
 
     print('***********************')
@@ -38,12 +38,12 @@ if myvqeG.nlayers == 0:
 
 else:
     start = time()
-    vqe_energy = myvqeG.minimize_energy(initAngles, maxiter=1000)
+    vqe_energy = myvqeG.minimize_energy(init_angles, maxiter=1000)
     end = time()
 
     print('***********************')
     print('RESULTS FOR ', myvqeG.molecule.name, 'GROUND STATE CALCULATION')
-    print('init angles', initAngles, '; ')
+    print('init angles', init_angles, '; ')
     print('init state : ', myvqeG.init_state)
     print('final angles', myvqeG.opt_angles)
     print('final state = ', myvqeG.final_state)

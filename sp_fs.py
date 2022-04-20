@@ -29,18 +29,18 @@ myvqeFS = algo(
 
 initzeros = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
 initrdm = [random.uniform(0, 2 * pi) for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
-initAngles = initzeros
+init_angles = initzeros
 
 if myvqeFS.nlayers == 0:
     start = time()
-    vqe_energy = myvqeFS.measure_expval(initAngles)                             #debug
+    vqe_energy = myvqeFS.measure_expval(init_angles)                            #debug
     end = time()
 
 else:
     start = time()
-    vqe_energy = myvqeFS.minimize_expval(initAngles, maxiter=1000)
+    vqe_energy = myvqeFS.minimize_expval(init_angles, maxiter=1000)
     end = time()
-    print('init angles', initAngles)
+    print('init angles', init_angles)
     print('final angles', myvqeFS.opt_angles)
     print('# iterations = ', myvqeFS.niter)
     print('optimization success ', myvqeFS.success)

@@ -26,7 +26,7 @@ elif args.basis == '6-31g':
 else:
     mybasis = args.basis
 
-namefile = "./outputs/" + args.molecule + "_pec_eigen"
+namefile = args.outdir + args.molecule + "_pec_eigen"
 
 outputfile = open(namefile + ".txt", "a+")
 outputfile.write('**********************************************' + '\n\n')

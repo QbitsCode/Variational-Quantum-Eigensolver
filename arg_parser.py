@@ -3,6 +3,7 @@ import argparse
 
 def build_default_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
+    parser.add_argument('--outdir', help='path of local output directory', type=str, required=True)
     parser.add_argument('--jobID', help='computation job id', type=str, required=True)
     parser.add_argument('--algo', help='VQE algorithm', required=True)
     parser.add_argument('--molecule', help='molecule chemical formula', type=str, required=True)

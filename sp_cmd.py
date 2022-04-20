@@ -66,7 +66,7 @@ elif args.algo == 'VQE_fs_test':
     )
 
 initzeros = [0.0 for _ in range(myvqe.nexc * myvqe.nlayers)]
-initAngles = initzeros
+init_angles = initzeros
 
 if myvqe.nlayers == 0:
     outputfile = open("./outputs/" + myvqe.molecule.name + '_' + args.algo + "_HF_" + str(id_job) + ".txt", "a+")
@@ -78,11 +78,11 @@ if myvqe.nlayers == 0:
     outputfile.flush()
     if args.algo == 'VQE_g':
         start = time()
-        vqe_energy = myvqe.measure_energy(initAngles)
+        vqe_energy = myvqe.measure_energy(init_angles)
         end = time()
     else:
         start = time()
-        vqe_energy = myvqe.measure_expval(initAngles)
+        vqe_energy = myvqe.measure_expval(init_angles)
         end = time()
 
 else:
@@ -96,14 +96,14 @@ else:
     outputfile.flush()
     if args.algo == 'VQE_g':
         start = time()
-        vqe_energy = myvqe.minimize_energy(initAngles)
+        vqe_energy = myvqe.minimize_energy(init_angles)
         end = time()
     else:
         start = time()
-        vqe_energy = myvqe.minimize_expval(initAngles)
+        vqe_energy = myvqe.minimize_expval(init_angles)
         end = time()
 
-    outputfile.write('init angles' + str(initAngles) + '\n')
+    outputfile.write('init angles' + str(init_angles) + '\n')
 
     outputfile.write('final angles = ' + str(myvqe.opt_angles) + '\n')
 
@@ -114,7 +114,7 @@ outputfile.write('VQE electronic energy = ' + str(vqe_energy) + ' Ha' + '\n')
 outputfile.write('total energy = ' + str(vqe_energy + myvqe.molecule.nuclear_energy) + ' Ha' + '\n')
 outputfile.write('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
 outputfile.write("-------------------------------------------------------" + '\n')
-outputfile.write('init angles : ' + str(initAngles) + '\n' + str(myvqe.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqe.backend) + '\n' + str(myvqe.shots) + ' shot(s) ' + '\nalgo ' + str(myvqe.optimizer) + '\n')
+outputfile.write('init angles : ' + str(init_angles) + '\n' + str(myvqe.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqe.backend) + '\n' + str(myvqe.shots) + ' shot(s) ' + '\nalgo ' + str(myvqe.optimizer) + '\n')
 outputfile.write('Nuclear Repulsion = ' + str(myvqe.molecule.nuclear_energy) + ' Ha\n')
 outputfile.write('Basis : ' + str(myvqe.molecule.basis_name) + '\n')
 outputfile.write('Use Uent gate : ' + str(myvqe.useUent) + '\n')

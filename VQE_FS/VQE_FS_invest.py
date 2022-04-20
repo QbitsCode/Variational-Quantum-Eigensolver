@@ -195,15 +195,15 @@ class VQE_fs_test(ABC):
             print(final_energy)
         return final_energy
 
-    def minimize_expval(self, initAngles, maxiter=1000):                        # Optimization
+    def minimize_expval(self, init_angles, maxiter=1000):                       # Optimization
 
         if self.optimize_with.casefold() == 'scipy'.casefold():                 #with scipy
-            result = optimize.minimize(self.measure_expval, initAngles, method=self.optimizer, options={'maxiter': maxiter}, bounds=[(-2 * pi, 2 * pi) for _ in range(self.nexc * self.nlayers)])
+            result = optimize.minimize(self.measure_expval, init_angles, method=self.optimizer, options={'maxiter': maxiter}, bounds=[(-2 * pi, 2 * pi) for _ in range(self.nexc * self.nlayers)])
             self.success = result.success
             self.optmessage = result.message
         elif self.optimize_with.casefold() == 'qiskit'.casefold():              #with qiskit
             algorithm = self.optimizer(maxiter=maxiter)
-            result = algorithm.minimize(self.measure_expval, initAngles)
+            result = algorithm.minimize(self.measure_expval, init_angles)
         else:
             print('Unknown library for optimization')
 

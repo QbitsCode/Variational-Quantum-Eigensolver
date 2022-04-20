@@ -33,14 +33,14 @@ lengths = []
 energies = []
 
 if args.nlayer == 0:
-    namefile = "./outputs/" + args.molecule + "_pec_HF_" + str(id_job)
+    namefile = args.outdir + args.molecule + "_pec_HF_" + str(id_job)
     outputfile = open(namefile + ".txt", "a+")
     outputfile.write('**********************************************' + '\n\n')
     outputfile.write('RESULTS FOR ' + args.molecule + ' Hartree Fock ENERGY VQE CALCULATION' + '\n\n')
     outputfile.write('**********************************************' + '\n\n\n\n')
     outputfile.flush()
 else:
-    namefile = "./outputs/" + args.molecule + "_pec_ground_" + str(id_job)
+    namefile = args.outdir + args.molecule + "_pec_ground_" + str(id_job)
     outputfile = open(namefile + ".txt", "a+")
     outputfile.write('**********************************************' + '\n\n')
     outputfile.write('RESULTS FOR ' + args.molecule + ' VQE ENERGY CALCULATION' + '\n\n')
@@ -71,17 +71,17 @@ for length in arange(args.lb, args.ub, args.step):
     if length == args.lb:
         ket_coeff_dict, ket_list = build_ket_coeff_dict(myvqe.nα + myvqe.nβ, myvqe.nqbits)
 
-    initAngles = [0.0 for _ in range(myvqe.nexc * myvqe.nlayers)]
+    init_angles = [0.0 for _ in range(myvqe.nexc * myvqe.nlayers)]
 
     if myvqe.nlayers == 0:
         start = time()
-        vqe_energy = myvqe.measure_energy(initAngles)
+        vqe_energy = myvqe.measure_energy(init_angles)
         end = time()
 
     else:
 
         start = time()
-        vqe_energy = myvqe.minimize_energy(initAngles, maxiter=1000)
+        vqe_energy = myvqe.minimize_energy(init_angles, maxiter=1000)
         end = time()
 
     t = end - start
@@ -102,7 +102,7 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write('total energy = ' + str(vqe_energy + myvqe.molecule.nuclear_energy) + ' Ha' + '\n')
     outputfile.write('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
     outputfile.write("------------------" + '\n')
-    outputfile.write('init angles : ' + str(initAngles) + '\n' + str(myvqe.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqe.backend) + '\n' + str(myvqe.shots) + ' shot(s) ' + '\nalgo ' + str(myvqe.optimizer) +
+    outputfile.write('init angles : ' + str(init_angles) + '\n' + str(myvqe.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqe.backend) + '\n' + str(myvqe.shots) + ' shot(s) ' + '\nalgo ' + str(myvqe.optimizer) +
                      '\n')
     outputfile.write('Molecule : ' + str(myvqe.molecule.name) + '\n')
     outputfile.write(str(myvqe.molecule.geometry) + '\n')
@@ -113,7 +113,6 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write("-------------------------------" + '\n\n\n\n')
     outputfile.flush()
 
-print(ket_coeff_dict)
 outputfile.write('Basis : ' + str(myvqe.molecule.basis_name) + '\n')
 outputfile.write('Use Uent gate : ' + str(myvqe.useUent) + '\n')
 outputfile.write('Mapper : ' + str(myvqe.mapper.name) + '\n')

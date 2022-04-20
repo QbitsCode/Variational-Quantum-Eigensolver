@@ -32,7 +32,7 @@ id_job = args.jobID
 lengths = []
 energies = []
 
-namefile = "./outputs/" + args.molecule + "_pec_FS_" + str(id_job)
+namefile = args.outdir + args.molecule + "_pec_FS_" + str(id_job)
 
 outputfile = open(namefile + ".txt", "a+")
 outputfile.write('**********************************************' + '\n\n')
@@ -66,10 +66,10 @@ for length in arange(args.lb, args.ub, args.step):
     if length == args.lb:
         ket_coeff_dict, ket_list = build_ket_coeff_dict(myvqeFS.nα + myvqeFS.nβ, myvqeFS.nqbits)
 
-    initAngles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
+    init_angles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
 
     start = time()
-    vqe_energy = myvqeFS.minimize_expval(initAngles, maxiter=1000)
+    vqe_energy = myvqeFS.minimize_expval(init_angles, maxiter=1000)
     end = time()
     t = end - start
 
@@ -92,7 +92,7 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write('total energy = ' + str(vqe_energy + myvqeFS.molecule.nuclear_energy) + ' Ha' + '\n')
     outputfile.write('runtime : ' + str(t // 3600) + ' h ' + str((t % 3600) // 60) + ' min ' + str((t % 3600) % 60) + ' sec' + '\n')
     outputfile.write("---------------------------------" + '\n')
-    outputfile.write('init angles : ' + str(initAngles) + '\n' + str(myvqeFS.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqeFS.backend) + '\n' + str(myvqeFS.shots) + ' shot(s) ' + '\nalgo ' +
+    outputfile.write('init angles : ' + str(init_angles) + '\n' + str(myvqeFS.nlayers) + ' layer(s)' + '\n' + 'Backend : ' + str(myvqeFS.backend) + '\n' + str(myvqeFS.shots) + ' shot(s) ' + '\nalgo ' +
                      str(myvqeFS.optimizer) + '\n')
     outputfile.write('Molecule : ' + str(myvqeFS.molecule.name) + '\n')
     outputfile.write(str(myvqeFS.molecule.geometry) + '\n')
