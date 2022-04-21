@@ -11,16 +11,16 @@ echo $JOBPID
 python3 $FILENAME \
         --outdir='./outputs/' \
         --jobID=$JOBPID  \
-        --algo='VQE_fs' \
+        --algo='VQE_g' \
         --molecule='LiH' \
         --nlayer=1 \
-        --omega=0 \
+        --omega=-7.2 \
         --basis='small_custom' \
         --bondlen=0 \
-        --refstate='HF' \
+        --refstate='exc3' \
         --device='CPU' \
-        --lb=1.5 \
-        --ub=1.6 \
+        --lb=1 \
+        --ub=1.1 \
         --step=0.1 \
 
 

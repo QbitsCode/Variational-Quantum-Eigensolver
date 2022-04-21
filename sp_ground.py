@@ -1,30 +1,37 @@
 from time import time
+from tkinter import Y
+from numpy import random, pi
 from pyscf import gto
 from VQE_ground import VQE_g
 from VQE_utils import build_molecule, build_basis
 
-from qiskit.algorithms.optimizers import COBYLA, SLSQP, SPSA
+# custom_basis = build_basis({
+#     'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
+#     'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
+# }, 'Li-1,2s-ccpvdz & H-1s-sto3g')
 
 custom_basis = build_basis({
     'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
-    'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
-}, 'Li-1,2s-ccpvdz & H-1s-sto3g')
+    'O': gto.load("./basisets/small_custom_basis.nw", 'O'),
+}, 'O-2s,p-ccpvdz & H-1s-sto3g')
 
 # H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], custom_basis, 0, 1, 'H2')
-He = build_molecule([('He', [0, 0, 0])], '6-31g', 0, 1, 'He')
-# H2O = build_molecule([('O', [-3.56626, 1.77639, 0]),('H', [-2.59626, 1.77639, 0.00000]),('H', [-3.88959, 1.36040, -0.81444])], 'sto3g', 0, 1,'H2O')
+# He = build_molecule([('He', [0, 0, 0])], '6-31g', 0, 1, 'He')
+H2O = build_molecule([('O', [-3.56626, 1.77639, 0]), ('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444])], custom_basis, 0, 1, 'H2O')
 # N2 = build_molecule([('N',[0,0,0]),('N',[0,0,1.0975])], 'sto-3g', 0, 1,'N2')
 # LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, 1.5949])], custom_basis, 0, 1, 'LiH')
 
-mymlc = He
+mymlc = H2O
 
 myvqeG = VQE_g(
     mymlc,
-    nlayers=1,
+    nlayers=0,
     wordiness=0,
 )
+print(myvqeG.nqbits)
 
 initzeros = [0.0 for _ in range(myvqeG.nexc * myvqeG.nlayers)]
+init_rdm = [random.uniform(-1e-3, 1e-3) for _ in range(myvqeG.nexc * myvqeG.nlayers)]
 init_angles = initzeros
 
 if myvqeG.nlayers == 0:

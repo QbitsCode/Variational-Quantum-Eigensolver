@@ -3,7 +3,7 @@
 # Version v0.9
 # https://www.basissetexchange.org
 #----------------------------------------------------------------------
-#   Basis set: cc-pVDZ only s for Li and STO-3G for H
+#   Basis set: cc-pVDZ only s for Li and STO-3G for H and 2s,p for O
 # Description: cc-pVDZ
 #        Role: orbital
 #     Version: 1  (Data from ccRepo/Grant Hill)
@@ -28,4 +28,11 @@ H    S
       0.3425250914E+01       0.1543289673E+00
       0.6239137298E+00       0.5353281423E+00
       0.1688554040E+00       0.4446345422E+00
+
+#BASIS SET: (9s,4p,1d) -> [3s,2p,1d] STO-3G reduced
+O    SP
+      0.5033151319E+01      -0.9996722919E-01       0.1559162750E+00
+      0.1169596125E+01       0.3995128261E+00       0.6076837186E+00
+      0.3803889600E+00       0.7001154689E+00       0.3919573931E+00
+
 END
