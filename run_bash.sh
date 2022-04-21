@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# FILENAME=pec_fs_cmd.py
+FILENAME=pec_fs_cmd.py
 # FILENAME=pec_ground_cmd.py
-FILENAME=sp_cmd.py
+# FILENAME=sp_cmd.py
 # FILENAME=pec_eigen_cmd.py
 
 JOBPID=$$
@@ -11,13 +11,13 @@ echo $JOBPID
 python3 $FILENAME \
         --outdir='./outputs/' \
         --jobID=$JOBPID  \
-        --algo='VQE_g' \
-        --molecule='H2O' \
+        --algo='VQE_fs' \
+        --molecule='LiH' \
         --nlayer=1 \
         --omega=0 \
         --basis='small_custom' \
         --bondlen=0 \
-        --refstate='HF' \
+        --refstate='exc5' \
         --device='CPU' \
         --lb=1 \
         --ub=1.1 \

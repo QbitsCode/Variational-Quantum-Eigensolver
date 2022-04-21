@@ -21,7 +21,7 @@ custom_basis = build_basis({
 
 # H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], custom_basis, 0, 1, 'H2')
 # He = build_molecule([('He', [0, 0, 0])], '6-31g', 0, 1, 'He')
-H2O = build_molecule([('O', [-3.56626, 1.77639, 0]), ('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444])], custom_basis, 0, 1, 'H2O')
+H2O = build_molecule([('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444]), ('O', [-3.56626, 1.77639, 0])], custom_basis, 0, 1, 'H2O')
 # N2 = build_molecule([('N',[0,0,0]),('N',[0,0,1.0975])], 'sto-3g', 0, 1,'N2')
 # LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, 1.5949])], custom_basis, 0, 1, 'LiH')
 

@@ -59,9 +59,9 @@ for length in arange(args.lb, args.ub, args.step):
     if args.molecule == 'H2':
         mymlc = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'H2')
     elif args.molecule == 'LiH':
-        mymlc = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'LiH')
+        mymlc = build_molecule([('H', [0, 0, length]), ('Li', [0, 0, 0])], mybasis, 0, 1, 'LiH')
     elif args.molecule == 'H2O':
-        mymlc = build_molecule([('O', [-3.56626, 1.77639, 0]), ('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444])], mybasis, 0, 1, 'H2O') #TODO make the hoh angle vary.
+        mymlc = build_molecule([('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444]), ('O', [-3.56626, 1.77639, 0])], mybasis, 0, 1, 'H2O') #TODO make the hoh angle vary.
     else:
         raise NotImplementedError('Molecule ' + args.molecule)
 

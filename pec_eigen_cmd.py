@@ -51,7 +51,7 @@ for length in arange(args.lb, args.ub, args.step):
     if args.molecule == 'H2':
         mymlc = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'H2')
     elif args.molecule == 'LiH':
-        mymlc = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'LiH')
+        mymlc = build_molecule([('H', [0, 0, length]), ('Li', [0, 0, 0])], mybasis, 0, 1, 'LiH')
     else:
         raise NotImplementedError('Molecule ' + args.molecule)
 

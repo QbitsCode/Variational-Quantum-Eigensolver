@@ -39,11 +39,11 @@ if args.molecule == 'H2':
 elif args.molecule == 'He':
     mymlc = build_molecule([('He', [0, 0, 0])], mybasis, 0, 1, 'He')
 elif args.molecule == 'H2O':
-    mymlc = build_molecule([('O', [-3.56626, 1.77639, 0]), ('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444])], mybasis, 0, 1, 'H2O')
+    mymlc = build_molecule([('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444]), ('O', [-3.56626, 1.77639, 0])], mybasis, 0, 1, 'H2O')
 elif args.molecule == 'LiH':
     if args.bondlen == 0:
         args.bondlen = 1.5949
-    mymlc = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, args.bondlen])], mybasis, 0, 1, 'LiH')
+    mymlc = build_molecule([('H', [0, 0, args.bondlen]), ('Li', [0, 0, 0])], mybasis, 0, 1, 'LiH')
 
 id_job = args.jobID
 
@@ -98,7 +98,7 @@ else:
     outputfile = open("./outputs/" + myvqe.molecule.name + '_' + args.algo + "_SP_" + str(id_job) + ".txt", "a+")
     outputfile.write('**********************************************' + '\n\n')
     outputfile.write('RESULTS FOR ' + myvqe.molecule.name + ' VQE ENERGY CALCULATION' + '\n\n')
-    outputfile.write('**********************************************')
+    outputfile.write('**********************************************' + '\n\n\n\n')
     outputfile.write(
         str(myvqe.molecule.geometry) + '\n' + args.algo + '\n' + str(args.nlayer) + 'layer(s)' + '\n' + 'ω= ' + str(args.omega) + '\n' + args.basis + ' basis' + '\n' + 'refstate = ' + args.refstate + '\n\n\n\n')
     outputfile.flush()
