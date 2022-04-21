@@ -22,6 +22,7 @@ elif args.basis == 'small_custom':
     mybasis = build_basis({
         'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
         'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
+        'O': gto.load("./basisets/small_custom_basis.nw", 'O'),
     }, {
         'H': 'H-1s-sto3g',
         'Li': 'Li-1,2s-ccpvdz',
