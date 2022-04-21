@@ -9,10 +9,10 @@ from myutils import getStrFinalRes
 
 def init_gate(instance, Measure_State=False):
     hfstate = build_HF(instance)
-    excstate1 = {"H2": {'sto-3g': [0, 1]}, "LiH": {'Li-1,2s-ccpvdz & H-1s-sto3g': [0, 3, 4, 5], 'Li-1,2,3s-ccpvdz & H-1s-sto3g': [0, 1, 2, 4]}}
-    excstate3 = {"LiH": {'Li-1,2s-ccpvdz & H-1s-sto3g': [0, 2, 3, 5]}}
-    excstate5 = {"LiH": {'Li-1,2s-ccpvdz & H-1s-sto3g': [2, 3, 4, 5]}}
-    excstate7 = {"LiH": {'Li-1,2s-ccpvdz & H-1s-sto3g': [1, 2, 4, 5]}}
+    excstate1 = {"H2": {'sto-3g': [0, 1], 'H-1s-sto3g & H-1s-sto3g': [0, 1]}, "LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [0, 3, 4, 5], 'H-1s-sto3g & Li-1,2,3s-ccpvdz': [0, 1, 2, 4]}}
+    excstate3 = {"LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [0, 2, 3, 5]}}
+    excstate5 = {"LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [2, 3, 4, 5]}}
+    excstate7 = {"LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [1, 2, 4, 5]}}
 
     init_qr = QuantumRegister(instance.nqbits)
     gate = QuantumCircuit(init_qr)

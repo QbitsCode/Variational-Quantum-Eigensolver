@@ -8,12 +8,16 @@ from VQE_utils import build_molecule, build_basis
 # custom_basis = build_basis({
 #     'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
 #     'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
-# }, 'Li-1,2s-ccpvdz & H-1s-sto3g')
+# }, {
+#     'H': 'H-1s-sto3g',
+#     'Li': 'Li-1,2s-ccpvdz',
+#     'O': 'O-2s,p-sto3g'
+# })
 
 custom_basis = build_basis({
     'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
     'O': gto.load("./basisets/small_custom_basis.nw", 'O'),
-}, 'O-2s,p-ccpvdz & H-1s-sto3g')
+}, 'O-2s,p-sto3g & H-1s-sto3g')
 
 # H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], custom_basis, 0, 1, 'H2')
 # He = build_molecule([('He', [0, 0, 0])], '6-31g', 0, 1, 'He')

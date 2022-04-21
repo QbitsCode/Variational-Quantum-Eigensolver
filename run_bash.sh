@@ -12,12 +12,12 @@ python3 $FILENAME \
         --outdir='./outputs/' \
         --jobID=$JOBPID  \
         --algo='VQE_g' \
-        --molecule='LiH' \
+        --molecule='H2' \
         --nlayer=1 \
         --omega=-7.2 \
         --basis='small_custom' \
         --bondlen=0 \
-        --refstate='exc3' \
+        --refstate='exc1' \
         --device='CPU' \
         --lb=1 \
         --ub=1.1 \

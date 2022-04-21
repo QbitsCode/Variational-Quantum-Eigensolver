@@ -14,12 +14,19 @@ if args.basis == 'custom':
     mybasis = build_basis({
         'H': gto.load("./basisets/custom_basis.nw", 'H'),
         'Li': gto.load("./basisets/custom_basis.nw", 'Li'),
-    }, 'Li-1,2,3s-ccpvdz & H-1s-sto3g')
+    }, {
+        'H': 'H-1s-sto3g',
+        'Li': 'Li-1,2,3s-ccpvdz',
+    })
 elif args.basis == 'small_custom':
     mybasis = build_basis({
         'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
         'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
-    }, 'Li-1,2s-ccpvdz & H-1s-sto3g')
+    }, {
+        'H': 'H-1s-sto3g',
+        'Li': 'Li-1,2s-ccpvdz',
+        'O': 'O-2s,p-sto3g'
+    })
 elif args.basis == 'sto-3g':
     mybasis = 'sto-3g'
 elif args.basis == '6-31g':
@@ -52,6 +59,8 @@ for length in arange(args.lb, args.ub, args.step):
         mymlc = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'H2')
     elif args.molecule == 'LiH':
         mymlc = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'LiH')
+    elif args.molecule == 'H2O':
+        mymlc = build_molecule([('O', [-3.56626, 1.77639, 0]), ('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444])], mybasis, 0, 1, 'H2O') #TODO make the hoh angle vary.
     else:
         raise NotImplementedError('Molecule ' + args.molecule)
 
@@ -118,7 +127,7 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write("-------------------------------------------------------" + '\n\n\n')
     outputfile.flush()
 
-outputfile.write('Basis : ' + str(myvqeFS.molecule.basis) + '\n')
+outputfile.write('Basis : ' + str(myvqeFS.molecule.basis_name) + '\n')
 outputfile.write('Use Uent gate : ' + str(myvqeFS.useUent) + '\n')
 outputfile.write('Mapper : ' + str(myvqeFS.mapper.name) + '\n')
 outputfile.write("-------------------------------------------------------" + '\n')

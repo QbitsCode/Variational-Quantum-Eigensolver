@@ -14,12 +14,20 @@ if args.basis == 'custom':
     mybasis = build_basis({
         'H': gto.load("./basisets/custom_basis.nw", 'H'),
         'Li': gto.load("./basisets/custom_basis.nw", 'Li'),
-    }, 'Li-1,2,3s-ccpvdz & H-1s-sto3g')
+    }, {
+        'H': 'H-1s-sto3g',
+        'Li': 'Li-1,2,3s-ccpvdz',
+    })
 elif args.basis == 'small_custom':
     mybasis = build_basis({
         'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
         'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
-    }, 'Li-1,2s-ccpvdz & H-1s-sto3g')
+        'O': gto.load("./basisets/small_custom_basis.nw", 'O'),
+    }, {
+        'H': 'H-1s-sto3g',
+        'Li': 'Li-1,2s-ccpvdz',
+        'O': 'O-2s,p-sto3g'
+    })
 elif args.basis == 'sto-3g':
     mybasis = 'sto-3g'
 elif args.basis == '6-31g':

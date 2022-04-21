@@ -11,11 +11,12 @@ class build_molecule(ABC):
 
         if isinstance(basis, build_basis):
             self.basis = basis.b_dict
+            self.basis_name = str(" & ".join([basis.name_dict[atom[0]] for atom in self.geometry]))
         else:
             self.basis = basis
+            self.basis_name = str(basis)
 
         self.name = name
-        self.basis_name = str(basis)
 
         pyscfstring = ""
         qiskitlist = []
@@ -45,12 +46,12 @@ class build_molecule(ABC):
 
 class build_basis(ABC):
 
-    def __init__(self, b_dict, name) -> None:
+    def __init__(self, b_dict, name_dict) -> None:
         self.b_dict = b_dict
-        self.name = name
+        self.name_dict = name_dict
 
     def __str__(self) -> str:
-        return self.name
+        return str(" & ".join(self.name_dict.values()))
 
     def __repr__(self) -> str:
         return self.b_dict
