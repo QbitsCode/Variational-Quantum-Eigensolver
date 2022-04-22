@@ -77,7 +77,7 @@ initzeros = [0.0 for _ in range(myvqe.nexc * myvqe.nlayers)]
 init_angles = initzeros
 
 if myvqe.nlayers == 0:
-    outputfile = open("./outputs/" + myvqe.molecule.name + '_' + args.algo + "_HF_" + str(id_job) + ".txt", "a+")
+    outputfile = open(args.outdir + myvqe.molecule.name + '_' + args.algo + "_HF_" + str(id_job) + ".txt", "a+")
     outputfile.write('**********************************************' + '\n\n')
     outputfile.write('RESULTS FOR ' + myvqe.molecule.name + ' VQE ENERGY CALCULATION' + '\n\n')
     outputfile.write('**********************************************' + '\n\n\n\n')
@@ -95,7 +95,7 @@ if myvqe.nlayers == 0:
 
 else:
 
-    outputfile = open("./outputs/" + myvqe.molecule.name + '_' + args.algo + "_SP_" + str(id_job) + ".txt", "a+")
+    outputfile = open(args.outdir + myvqe.molecule.name + '_' + args.algo + "_SP_" + str(id_job) + ".txt", "a+")
     outputfile.write('**********************************************' + '\n\n')
     outputfile.write('RESULTS FOR ' + myvqe.molecule.name + ' VQE ENERGY CALCULATION' + '\n\n')
     outputfile.write('**********************************************' + '\n\n\n\n')
