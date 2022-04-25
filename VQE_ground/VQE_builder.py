@@ -136,13 +136,12 @@ class VQE_g(ABC):
             print(final_energy)
         return final_energy
 
-    def minimize_energy(self, init_angles, maxiter=1000):                                                 # Optimization
-        if self.optimize_with.casefold() == 'scipy'.casefold():                                           #with scipy
-            result = optimize.minimize(self.measure_energy, init_angles, method=self.optimizer, options={
-                'maxiter': maxiter,
-                'disp': True
-            }, bounds=[(-2 * pi, 2 * pi) for _ in range(self.nexc * self.nlayers)])                       #methods COBYLA (default maxiter = 1000), SLSQP (default maxiter = 100), SPSA noise tolerant (default maxiter = 100)
-        elif self.optimize_with.casefold() == 'qiskit'.casefold():                                        #with qiskit
+    def minimize_energy(self, init_angles, maxiter=1000):                                                                     # Optimization
+        if self.optimize_with.casefold() == 'scipy'.casefold():                                                               #with scipy
+            result = optimize.minimize(self.measure_energy, init_angles, method=self.optimizer, options={'maxiter': maxiter},
+                                       bounds=[(-2 * pi, 2 * pi)
+                                               for _ in range(self.nexc * self.nlayers)])                                     #methods COBYLA (default maxiter = 1000), SLSQP (default maxiter = 100), SPSA noise tolerant (default maxiter = 100)
+        elif self.optimize_with.casefold() == 'qiskit'.casefold():                                                            #with qiskit
             algorithm = self.optimizer(maxiter=maxiter)
             result = algorithm.minimize(self.measure_energy, init_angles)
         else:
