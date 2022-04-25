@@ -136,12 +136,13 @@ class VQE_g(ABC):
             print(final_energy)
         return final_energy
 
-    def minimize_energy(self, init_angles, maxiter=1000):                                                                     # Optimization
-        if self.optimize_with.casefold() == 'scipy'.casefold():                                                               #with scipy
-            result = optimize.minimize(self.measure_energy, init_angles, method=self.optimizer, options={'maxiter': maxiter},
-                                       bounds=[(-2 * pi, 2 * pi)
-                                               for _ in range(self.nexc * self.nlayers)])                                     #methods COBYLA (default maxiter = 1000), SLSQP (default maxiter = 100), SPSA noise tolerant (default maxiter = 100)
-        elif self.optimize_with.casefold() == 'qiskit'.casefold():                                                            #with qiskit
+    def minimize_energy(self, init_angles, maxiter=1000):                                                 # Optimization
+        if self.optimize_with.casefold() == 'scipy'.casefold():                                           #with scipy
+            result = optimize.minimize(self.measure_energy, init_angles, method=self.optimizer, options={
+                'maxiter': maxiter,
+                'disp': True
+            }, bounds=[(-2 * pi, 2 * pi) for _ in range(self.nexc * self.nlayers)])                       #methods COBYLA (default maxiter = 1000), SLSQP (default maxiter = 100), SPSA noise tolerant (default maxiter = 100)
+        elif self.optimize_with.casefold() == 'qiskit'.casefold():                                        #with qiskit
             algorithm = self.optimizer(maxiter=maxiter)
             result = algorithm.minimize(self.measure_energy, init_angles)
         else:
@@ -163,6 +164,6 @@ class VQE_g(ABC):
         self.opt_angles = result.x
         self.opt_state = self.psi_ansatz(self.opt_angles)
         self.opt_energy = self.measure_energy(self.opt_angles)
-        self.init_state = init_gate(self, Measure_State=True)
+        self.init_state, self.init_state_dict = self.psi_ansatz(init_angles, Measure_State=True)
         self.final_state, self.final_state_dict = self.psi_ansatz(self.opt_angles, Measure_State=True)
         return self.opt_energy
