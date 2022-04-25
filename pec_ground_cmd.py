@@ -88,9 +88,8 @@ for length in arange(args.lb, args.ub, args.step):
         end = time()
 
     else:
-
         start = time()
-        vqe_energy = myvqe.minimize_energy(init_angles, maxiter=1000)
+        vqe_energy = myvqe.minimize_energy(init_angles, maxiter=1000, tol=args.opttol)
         end = time()
 
     t = end - start

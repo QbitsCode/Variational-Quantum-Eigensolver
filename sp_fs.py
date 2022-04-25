@@ -42,7 +42,7 @@ if myvqeFS.nlayers == 0:
 
 else:
     start = time()
-    vqe_energy = myvqeFS.minimize_expval(init_angles, maxiter=1000)
+    vqe_energy = myvqeFS.minimize_expval(init_angles, maxiter=1000, tol=1e-6)
     end = time()
     print('init angles', init_angles)
     print('final angles', myvqeFS.opt_angles)

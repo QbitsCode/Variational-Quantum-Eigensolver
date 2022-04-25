@@ -22,6 +22,7 @@ python3 $FILENAME \
         --lb=1 \
         --ub=1.1 \
         --step=0.1 \
+        --opttol=1e-8 \
 
 
 

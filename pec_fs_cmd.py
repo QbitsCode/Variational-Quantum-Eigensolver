@@ -86,7 +86,7 @@ for length in arange(args.lb, args.ub, args.step):
     init_angles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
 
     start = time()
-    vqe_energy = myvqeFS.minimize_expval(init_angles, maxiter=1000)
+    vqe_energy = myvqeFS.minimize_expval(init_angles, maxiter=1000, tol=args.opttol)
     end = time()
     t = end - start
 
