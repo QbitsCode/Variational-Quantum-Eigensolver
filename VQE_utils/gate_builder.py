@@ -10,8 +10,8 @@ from myutils import getStrFinalRes
 def init_gate(instance, Measure_State=False):
     hfstate = build_HF(instance)
     excstate1 = {"H2": {'sto-3g': [0, 1], 'H-1s-sto3g & H-1s-sto3g': [0, 1]}, "LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [0, 3, 4, 5], 'H-1s-sto3g & Li-1,2,3s-ccpvdz': [0, 1, 2, 4]}}
-    excstate2p = {"LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [0, 1, 3, 5]}}
     excstate3 = {"LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [0, 2, 3, 5]}}
+    excstate4 = {"LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [1, 3, 4, 5]}}
     excstate5 = {"LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [2, 3, 4, 5]}}
     excstate7 = {"LiH": {'H-1s-sto3g & Li-1,2s-ccpvdz': [1, 2, 4, 5]}}
 
@@ -35,12 +35,28 @@ def init_gate(instance, Measure_State=False):
             gate.cx(1, 4)
             gate.cx(1, 5)
             gate.x([0, 3])
-    elif instance.refstate == 'exc2p':
-        gate.x(excstate2p[instance.molecule.name][instance.molecule.basis_name])
     elif instance.refstate == 'exc3':
         gate.x(excstate3[instance.molecule.name][instance.molecule.basis_name])
+    elif instance.refstate == 'exc4':
+        gate.x(excstate4[instance.molecule.name][instance.molecule.basis_name])
+    elif instance.refstate == 'exc4p':
+        if instance.molecule.name == 'LiH':
+            gate.x([1, 4])
+            gate.h([2])
+            gate.x([0, 5])                                                      # makes 0.707 (|011110> + |110011>)
+            gate.cx(2, 0)
+            gate.cx(2, 3)
+            gate.cx(2, 5)
     elif instance.refstate == 'exc5':
         gate.x(excstate5[instance.molecule.name][instance.molecule.basis_name])
+    elif instance.refstate == 'exc6':
+        if instance.molecule.name == 'LiH':
+            gate.x([2, 5])
+            gate.h([1])
+            gate.x([0, 4])
+            gate.cx(1, 3)                                                       #makes 0.707 (|101110> + |110101>)
+            gate.cx(1, 0)
+            gate.cx(1, 4)
     elif instance.refstate == 'exc7':
         gate.x(excstate7[instance.molecule.name][instance.molecule.basis_name])
     else:
