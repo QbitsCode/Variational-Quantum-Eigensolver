@@ -133,6 +133,7 @@ class VQE_g(ABC):
             self.final_state = self.psi_ansatz(None, Measure_State=True)[0]
         if self.wordiness > 0:
             print('***energy measure***')
+            print('geometry : ', self.molecule.geometry)
             print('angles : ', angles)
             print('electronic energy : ', final_energy)
             print('total energy : ', final_energy + self.molecule.nuclear_energy)

@@ -87,11 +87,12 @@ for length in arange(args.lb, args.ub, args.step):
         start = time()
         vqe_energy = myvqe.measure_energy(init_angles)
         end = time()
-
     else:
         start = time()
         vqe_energy = myvqe.minimize_energy(init_angles, maxiter=1000, tol=args.opttol)
         end = time()
+        outputfile.write('init angles' + str(init_angles) + '\n')
+        outputfile.write('final angles = ' + str(myvqe.opt_angles) + '\n')
 
     t = end - start
     lengths.append(length)

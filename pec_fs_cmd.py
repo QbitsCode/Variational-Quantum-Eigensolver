@@ -107,6 +107,8 @@ for length in arange(args.lb, args.ub, args.step):
     outputfile.write('Omega (Total Energy Shift) = ' + str(myvqeFS.omegatot) + ' Ha \n')
     outputfile.write('refstate = ' + args.refstate + '\n')
     outputfile.write('final state = ' + myvqeFS.final_state + '\n')
+    outputfile.write('init angles' + str(init_angles) + '\n')
+    outputfile.write('final angles = ' + str(myvqeFS.opt_angles) + '\n')
     outputfile.write('Electronic Hamiltonian : (H-' + str(myvqeFS.omegael) + ')² \n')
     outputfile.write('electronic energy = ' + str(vqe_energy) + ' Ha' + '\n')
     outputfile.write('total energy = ' + str(vqe_energy + myvqeFS.molecule.nuclear_energy) + ' Ha' + '\n')

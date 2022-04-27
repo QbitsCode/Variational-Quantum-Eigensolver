@@ -158,6 +158,7 @@ class VQE_fs_test(ABC):
 
         if self.wordiness > 0:
             print('***measure expectation value of FS operator***')
+            print('geometry : ', self.molecule.geometry)
             print('angles : ', angles)
             print('electronic expval : ', final_expval)
             print('************ \n\n')
@@ -194,6 +195,7 @@ class VQE_fs_test(ABC):
             self.final_state = self.psi_ansatz(None, Measure_State=True)
         if self.wordiness > 0:
             print('***energy measure***')
+            print('geometry : ', self.molecule.geometry)
             print('angles : ', angles)
             print('electronic energy : ', final_energy)
             print('total energy : ', final_energy + self.molecule.nuclear_energy)
