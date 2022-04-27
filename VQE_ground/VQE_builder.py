@@ -132,8 +132,11 @@ class VQE_g(ABC):
             self.init_state = init_gate(self, Measure_State=True)
             self.final_state = self.psi_ansatz(None, Measure_State=True)[0]
         if self.wordiness > 0:
-            print(angles)
-            print(final_energy)
+            print('***energy measure***')
+            print('angles : ', angles)
+            print('electronic energy : ', final_energy)
+            print('total energy : ', final_energy + self.molecule.nuclear_energy)
+            print('************ \n\n')
         return final_energy
 
     def minimize_energy(self, init_angles, maxiter=1000, tol=1e-6):             # Optimization

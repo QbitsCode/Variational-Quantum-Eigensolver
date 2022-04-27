@@ -30,7 +30,7 @@ class VQE_fs_test(ABC):
             backend='statevector_simulator',
             shots=1,
             optimize_with='scipy',
-            wordiness=False,
+            wordiness=0,
             useUent=False,
             device='CPU',
     ):
@@ -157,8 +157,10 @@ class VQE_fs_test(ABC):
             self.final_state = self.psi_ansatz(None, Measure_State=True)
 
         if self.wordiness > 0:
-            print(angles)
-            print(final_expval)
+            print('***measure expectation value of FS operator***')
+            print('angles : ', angles)
+            print('electronic expval : ', final_expval)
+            print('************ \n\n')
         return final_expval
 
     def measure_energy(self, angles):
@@ -191,8 +193,11 @@ class VQE_fs_test(ABC):
             self.init_state = init_gate(self, Measure_State=True)
             self.final_state = self.psi_ansatz(None, Measure_State=True)
         if self.wordiness > 0:
-            print(angles)
-            print(final_energy)
+            print('***energy measure***')
+            print('angles : ', angles)
+            print('electronic energy : ', final_energy)
+            print('total energy : ', final_energy + self.molecule.nuclear_energy)
+            print('************ \n\n')
         return final_energy
 
     def minimize_expval(self, init_angles, maxiter=1000, tol=1e-6):             # Optimization

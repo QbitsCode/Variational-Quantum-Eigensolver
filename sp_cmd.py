@@ -51,14 +51,14 @@ if args.algo == 'VQE_g':
     myvqe = VQE_g(
         mymlc,
         nlayers=args.nlayer,
-        wordiness=0,
+        wordiness=args.wordiness,
         device=args.device,
     )
 elif args.algo == 'VQE_fs':
     myvqe = VQE_fs(
         mymlc,
         nlayers=args.nlayer,
-        wordiness=0,
+        wordiness=args.wordiness,
         ω=args.omega,
         refstate=args.refstate,
         device=args.device,
@@ -67,7 +67,7 @@ elif args.algo == 'VQE_fs_test':
     myvqe = VQE_fs_test(
         mymlc,
         nlayers=args.nlayer,
-        wordiness=0,
+        wordiness=args.wordiness,
         ω=args.omega,
         refstate=args.refstate,
         device=args.device,

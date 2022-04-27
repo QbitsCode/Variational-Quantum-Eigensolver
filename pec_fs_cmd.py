@@ -74,7 +74,7 @@ for length in arange(args.lb, args.ub, args.step):
     myvqeFS = VQE_fs(
         mymlc,
         nlayers=args.nlayer,
-        wordiness=0,
+        wordiness=args.wordiness,
         ω=ω,                                                                    #omega is the target zone of total energy, in Ha
         refstate=args.refstate,
     )

@@ -74,6 +74,7 @@ for length in arange(args.lb, args.ub, args.step):
         mymlc,
         nlayers=args.nlayer,
         device=args.device,
+        wordiness=args.wordiness,
     )
 
     if length == args.lb:

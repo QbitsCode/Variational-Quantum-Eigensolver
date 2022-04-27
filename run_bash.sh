@@ -23,6 +23,7 @@ python3 $FILENAME \
         --ub=1.1 \
         --step=0.1 \
         --opttol=1e-8 \
+        --wordiness=1 \
 
 
 
