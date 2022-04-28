@@ -205,7 +205,7 @@ class VQE_fs_test(ABC):
     def minimize_expval(self, init_angles, maxiter=1000, tol=1e-6):             # Optimization
 
         if self.optimize_with.casefold() == 'scipy'.casefold():                 #with scipy
-            result = optimize.minimize(self.measure_expval, init_angles, method=self.optimizer, options={'maxiter': maxiter}, tol=tol, bounds=[(-2 * pi, 2 * pi) for _ in range(self.nexc * self.nlayers)])
+            result = optimize.minimize(self.measure_expval, init_angles, method=self.optimizer, options={'maxiter': maxiter}, bounds=[(-2 * pi, 2 * pi) for _ in range(self.nexc * self.nlayers)])
             self.success = result.success
             self.optmessage = result.message
         elif self.optimize_with.casefold() == 'qiskit'.casefold():              #with qiskit
