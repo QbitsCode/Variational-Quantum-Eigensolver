@@ -16,6 +16,6 @@ def build_default_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument('--lb', help='for pec - lower bound of length range in Å ', type=float, required=False)
     parser.add_argument('--ub', help='for pec - upper bound of length range in Å ', type=float, required=False)
     parser.add_argument('--step', help='for pec - step between 2 measures in Å ', type=float, required=False)
-    parser.add_argument('--opttol', help='tolerance of optimizer ', type=float, required=False)
+    parser.add_argument('--init_angles', nargs="+", help='List of angles for the initial guess, input None for zeros', required=False)
     parser.add_argument('--wordiness', help='Verbose mode', type=int, required=False)
     return parser

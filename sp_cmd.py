@@ -104,11 +104,11 @@ else:
     outputfile.flush()
     if args.algo == 'VQE_g':
         start = time()
-        vqe_energy = myvqe.minimize_energy(init_angles, tol=args.opttol)
+        vqe_energy = myvqe.minimize_energy(init_angles)
         end = time()
     else:
         start = time()
-        vqe_energy = myvqe.minimize_expval(init_angles, tol=args.opttol)
+        vqe_energy = myvqe.minimize_expval(init_angles)
         end = time()
 
     outputfile.write('init angles' + str(init_angles) + '\n')

@@ -140,7 +140,7 @@ class VQE_g(ABC):
             print('************ \n\n')
         return final_energy
 
-    def minimize_energy(self, init_angles, maxiter=1000, tol=1e-6):             # Optimization
+    def minimize_energy(self, init_angles, maxiter=1000):                       # Optimization
         if self.optimize_with.casefold() == 'scipy'.casefold():                 #with scipy
             result = optimize.minimize(self.measure_energy, init_angles, method=self.optimizer, options={'maxiter': maxiter}, bounds=[(-2 * pi, 2 * pi) for _ in range(self.nexc * self.nlayers)])
         elif self.optimize_with.casefold() == 'qiskit'.casefold():              #with qiskit

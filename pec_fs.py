@@ -38,7 +38,7 @@ for length in arange(lb, ub, step):
         init_angles = [0.0 for _ in range(myvqe.nexc * myvqe.nlayers)]
 
     start = time()
-    vqe_energy = myvqe.minimize_expval(init_angles, maxiter=1000, tol=1e-6)
+    vqe_energy = myvqe.minimize_expval(init_angles, maxiter=1000)
     end = time()
     t = end - start
 

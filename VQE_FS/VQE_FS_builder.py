@@ -196,7 +196,7 @@ class VQE_fs(ABC):
             print('************ \n\n')
         return final_energy
 
-    def minimize_expval(self, init_angles, maxiter=1000, tol=1e-6):             # Optimization
+    def minimize_expval(self, init_angles, maxiter=1000):                       # Optimization
         if self.optimize_with.casefold() == 'scipy'.casefold():                 #with scipy
             result = optimize.minimize(self.measure_expval, init_angles, method=self.optimizer, options={'maxiter': maxiter}, bounds=[(-2 * pi, 2 * pi) for _ in range(self.nexc * self.nlayers)])
             self.success = result.success

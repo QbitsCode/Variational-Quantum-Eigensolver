@@ -12,17 +12,17 @@ python3 $FILENAME \
         --outdir='./outputs/' \
         --jobID=$JOBPID  \
         --algo='VQE_fs' \
-        --molecule='LiH' \
+        --molecule='H2' \
         --nlayer=1 \
         --omega=0 \
         --basis='small_custom' \
         --bondlen=0 \
-        --refstate='exc5' \
+        --refstate='exc1' \
         --device='CPU' \
         --lb=1 \
         --ub=1.1 \
         --step=0.1 \
-        --opttol=1e-8 \
+        --init_angles 0.0 1.0 2.0 \
         --wordiness=0 \
 
 

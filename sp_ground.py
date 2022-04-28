@@ -49,7 +49,7 @@ if myvqeG.nlayers == 0:
 
 else:
     start = time()
-    vqe_energy = myvqeG.minimize_energy(init_angles, maxiter=1000, tol=1e-6)
+    vqe_energy = myvqeG.minimize_energy(init_angles, maxiter=1000)
     end = time()
 
     print('***********************')

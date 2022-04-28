@@ -80,11 +80,17 @@ for length in arange(args.lb, args.ub, args.step):
     )
 
     if length == args.lb:
-        init_angles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
+        if args.init_angles is None:
+            init_angles = [0.0 for _ in range(myvqeFS.nexc * myvqeFS.nlayers)]
+        else:
+            print(args.init_angles)
+            print(type(args.init_angles))
+            print(list(args.init_angles))
+            init_angles = args.init_angles
         ket_coeff_dict, ket_list = build_ket_coeff_dict(myvqeFS.nα + myvqeFS.nβ, myvqeFS.nqbits)
 
     start = time()
-    vqe_energy = myvqeFS.minimize_expval(init_angles, maxiter=1000, tol=args.opttol)
+    vqe_energy = myvqeFS.minimize_expval(init_angles, maxiter=1000)
     end = time()
     t = end - start
 
