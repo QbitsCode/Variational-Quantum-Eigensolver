@@ -27,9 +27,9 @@ def build_h5file_onestate(namefile, lengths, energies, state_dict={}, right_kets
     h5out.close()
 
 
-#Generate a file :
+# Generate a file :
 # leng =
 
 # ener =
 
-# build_h5file('./results/LiH_pec_FS_20171_temp', leng, ener)
+# build_h5file_onestate('./results/LiH_pec_FS_exc4', leng, ener)

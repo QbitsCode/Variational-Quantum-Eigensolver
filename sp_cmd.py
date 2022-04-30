@@ -42,7 +42,7 @@ elif args.molecule == 'LiH':
 elif args.molecule == 'BeH2':
     if args.bondlen == 0:
         args.bondlen = 1.33
-    mymlc = build_molecule([('H', [0, 0, args.bondlen]), ('H', [0, 0, args.bondlen]), ('Be', [0, 0, 0])], mybasis, 0, 1, 'BeH2')
+    mymlc = build_molecule([('H', [0, 0, -args.bondlen]), ('H', [0, 0, args.bondlen]), ('Be', [0, 0, 0])], mybasis, 0, 1, 'BeH2')
 
 id_job = args.jobID
 
