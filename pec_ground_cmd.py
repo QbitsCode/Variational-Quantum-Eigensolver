@@ -10,24 +10,19 @@ from arg_parser import build_default_arg_parser
 
 args = build_default_arg_parser().parse_args()
 
-if args.basis == 'custom':
-    mybasis = build_basis({
-        'H': gto.load("./basisets/custom_basis.nw", 'H'),
-        'Li': gto.load("./basisets/custom_basis.nw", 'Li'),
-    }, {
-        'H': 'H-1s-sto3g',
-        'Li': 'Li-1,2,3s-ccpvdz',
-    })
-elif args.basis == 'small_custom':
-    mybasis = build_basis({
-        'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
-        'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
-        'O': gto.load("./basisets/small_custom_basis.nw", 'O'),
-    }, {
-        'H': 'H-1s-sto3g',
-        'Li': 'Li-1,2s-ccpvdz',
-        'O': 'O-2s,p-sto3g'
-    })
+if args.basis == 'small_custom':
+    mybasis = build_basis(
+        {
+            'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
+            'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
+            'O': gto.load("./basisets/small_custom_basis.nw", 'O'),
+            'Be': gto.load("./basisets/small_custom_basis.nw", 'Be'),
+        }, {
+            'H': 'H-1s-sto3g',
+            'Li': 'Li-1,2s-ccpvdz',
+            'O': 'O-2s,p-sto3g',
+            'Be': 'Be-1,2s-sto3g'
+        })
 elif args.basis == 'sto-3g':
     mybasis = 'sto-3g'
 elif args.basis == '6-31g':
@@ -67,6 +62,8 @@ for length in arange(args.lb, args.ub, args.step):
         mymlc = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, length])], mybasis, 0, 1, 'H2')
     elif args.molecule == 'LiH':
         mymlc = build_molecule([('H', [0, 0, length]), ('Li', [0, 0, 0])], mybasis, 0, 1, 'LiH')
+    elif args.molecule == 'BeH2':
+        mymlc = build_molecule([('H', [0, 0, -length]), ('H', [0, 0, length]), ('Be', [0, 0, 0])], mybasis, 0, 1, 'BeH2')
     else:
         raise NotImplementedError('Molecule ' + args.molecule)
 

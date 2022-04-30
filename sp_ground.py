@@ -5,31 +5,31 @@ from pyscf import gto
 from VQE_ground import VQE_g
 from VQE_utils import build_molecule, build_basis
 
-# custom_basis = build_basis({
-#     'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
-#     'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
-# }, {
-#     'H': 'H-1s-sto3g',
-#     'Li': 'Li-1,2s-ccpvdz',
-#     'O': 'O-2s,p-sto3g'
-# })
+mybasis = build_basis(
+    {
+        'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
+        'Li': gto.load("./basisets/small_custom_basis.nw", 'Li'),
+        'O': gto.load("./basisets/small_custom_basis.nw", 'O'),
+        'Be': gto.load("./basisets/small_custom_basis.nw", 'Be'),
+    }, {
+        'H': 'H-1s-sto3g',
+        'Li': 'Li-1,2s-ccpvdz',
+        'O': 'O-2s,p-sto3g',
+        'Be': 'Be-1,2s-sto3g'
+    })
 
-custom_basis = build_basis({
-    'H': gto.load("./basisets/small_custom_basis.nw", 'H'),
-    'O': gto.load("./basisets/small_custom_basis.nw", 'O'),
-}, 'O-2s,p-sto3g & H-1s-sto3g')
-
-# H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], custom_basis, 0, 1, 'H2')
+# H2 = build_molecule([('H', [0, 0, 0]), ('H', [0, 0, 1.5])], mybasis, 0, 1, 'H2')
 # He = build_molecule([('He', [0, 0, 0])], '6-31g', 0, 1, 'He')
-H2O = build_molecule([('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444]), ('O', [-3.56626, 1.77639, 0])], custom_basis, 0, 1, 'H2O')
+# H2O = build_molecule([('O', [-3.56626, 1.77639, 0]), ('H', [-2.59626, 1.77639, 0.00000]), ('H', [-3.88959, 1.36040, -0.81444])], mybasis, 0, 1, 'H2O')
 # N2 = build_molecule([('N',[0,0,0]),('N',[0,0,1.0975])], 'sto-3g', 0, 1,'N2')
-# LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, 1.5949])], custom_basis, 0, 1, 'LiH')
+# LiH = build_molecule([('Li', [0, 0, 0]), ('H', [0, 0, 0.6])], mybasis, 0, 1, 'LiH')
+BeH2 = build_molecule([('H', [0, 0, -1.33]), ('H', [0, 0, 1.33]), ('Be', [0, 0, 0])], mybasis, 0, 1, 'BeH2')
 
-mymlc = H2O
+mymlc = BeH2
 
 myvqeG = VQE_g(
     mymlc,
-    nlayers=0,
+    nlayers=1,
     wordiness=0,
 )
 print(myvqeG.nqbits)
